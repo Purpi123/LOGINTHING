@@ -1,0 +1,64 @@
+import os
+import time
+
+
+clear = lambda: os.system('cls' if os.name == 'nt' else 'clear')
+
+
+valid_license_keys = [
+    "XF58-433D-FU6D", "AB12-345C-XY89", "CD34-567F-ZT12", "EF56-789G-UJ34", "GH78-901H-RF56",
+    "IJ90-234J-KL78", "KL12-456M-QW90", "MN34-678N-AS12", "OP56-890O-DF34", "QR78-012P-GH56",
+    "ST90-234Q-IJ78", "UV12-456R-KL90", "WX34-678S-MN12", "YZ56-890T-OP34", "AA78-012U-QR56",
+    "BB90-234V-ST78", "CC12-456W-UV90", "DD34-678X-WX12", "EE56-890Y-YZ34", "FF78-012Z-AA56",
+    "GG90-234A-BB78", "HH12-456B-CC90", "II34-678C-DD12", "JJ56-890D-EE34", "KK78-012E-FF56",
+    "LL90-234F-GG78"
+]
+
+def request_license():
+    while True:
+        license_key = input("Licence key: ")
+        if license_key in valid_license_keys:
+            print("Login Success!")
+            return license_key
+        else:
+            print("Login invalid. Try again")
+            time.sleep(1)
+            clear()
+
+def main():
+   
+    folder_name = "RewindData"
+    file_name = "LoginData.txt"
+    
+    
+    if not os.path.exists(folder_name):
+        
+        os.makedirs(folder_name)
+    
+    
+    file_path = os.path.join(folder_name, file_name)
+    
+    
+    if not os.path.exists(file_path):
+        
+        license_key = request_license()
+        with open(file_path, 'w') as f:
+            f.write(license_key)
+    else:
+        
+        with open(file_path, 'r') as f:
+            stored_license = f.read().strip()
+        
+        
+        if stored_license in valid_license_keys:
+            print("Login Success!")
+        else:
+            
+            print("Stored license key is invalid.")
+            license_key = request_license()
+            
+            with open(file_path, 'w') as f:
+                f.write(license_key)
+
+if __name__ == "__main__":
+    main()
